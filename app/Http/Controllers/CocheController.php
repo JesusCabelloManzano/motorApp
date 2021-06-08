@@ -27,7 +27,7 @@ class CocheController extends Controller
      
      
     function all(Request $request) {
-        $nrp = 7;
+        $nrp = 8;
         
         $orderby = 'id';
         
@@ -41,6 +41,8 @@ class CocheController extends Controller
         $maxCv = ''; 
         $color = '';
         $ordenado = '';
+        
+        $parametros += ['minKm' => $minKm, 'maxKm' => $maxKm, 'minPrecio' => $minPrecio, 'maxPrecio' => $maxPrecio, 'minCv' => $minCv, 'maxCv' => $maxCv, 'color' => $color, 'ordenado' => $ordenado];
         
         $direction = 'desc';
         
@@ -71,23 +73,22 @@ class CocheController extends Controller
                 $ordenado = $request->ordenado;
             }
         }
-        
         if(isset($request->tipo) || isset($request->provincia) || isset($request->mano) || !empty($request->minKm) 
             || !empty($request->maxKm) || !empty($request->minPrecio) || !empty($request->maxPrecio) || !empty($request->minCv) ||
                 !empty($request->maxCv) || !empty($request->color) || isset($request->cambio) || isset($request->combustible) || isset($request->plazas) || isset($request->puertas)){
 
             if(isset($request->tipo)){
                 $tipo = $request->tipo;
-                $parametros = array('tipo' => $tipo);
+                $parametros += ['tipo' => $tipo];
                 if(isset($request->marca)){
                     $marca = $request->marca;
-                    $parametros = array('marca' => $marca);
+                    $parametros += ['marca' => $marca];
                     if(isset($request->año)){
                         $año = $request->año;
-                        $parametros = array('año' => $año);
+                        $parametros += ['año' => $año];
                         if(isset($request->modelo)){
                             $modelo = $request->modelo;
-                            $parametros = array('modelo' => $modelo);
+                            $parametros += ['modelo' => $modelo];
                             $coches = Coche::where('modelo_id', $request->modelo)->orderBy($orderby, $direction)->paginate( $nrp );
                         }else
                         $coches = Coche::where('anio_id', $request->año)->orderBy($orderby, $direction)->paginate( $nrp );
@@ -99,80 +100,79 @@ class CocheController extends Controller
             
             if(isset($request->provincia)){
                 $provincia = $request->provincia;
-                $parametros = array('provincia' => $provincia);
+                $parametros += ['provincia' => $provincia];
                 $coches = Coche::where('provincia_id', $request->provincia)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(isset($request->mano)){
                 $mano = $request->mano;
-                $parametros = array('mano' => $mano);
+                $parametros += ['mano' => $mano];
                 $coches = Coche::where('mano', $request->mano)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(!empty($request->minKm)){
                 $minKm = $request->minKm;
-                $parametros = array('minKm' => $minKm);
+                $parametros += ['minKm' => $minKm];
                 $coches = Coche::where('km', '=>', $request->minKm)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(!empty($request->maxKm)){
                 $maxKm = $request->maxKm;
-                $parametros = array('maxKm' => $maxKm);
+                $parametros += ['maxKm' => $maxKm];
                 $coches = Coche::where('km', '<=', $request->maxKm)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(!empty($request->minPrecio)){
                 $minPrecio = $request->minPrecio;
-                $parametros = array('minPrecio' => $minPrecio);
+                $parametros += ['minPrecio' => $minPrecio];
                 $coches = Coche::where('precio', '=>', $request->minPrecio)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(!empty($request->maxPrecio)){
                 $maxPrecio = $request->maxPrecio;
-                $parametros = array('maxPrecio' => $maxPrecio);
+                $parametros += ['maxPrecio' => $maxPrecio];
                 $coches = Coche::where('precio', '<=', $request->maxPrecio)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(!empty($request->minCv)){
                 $minCv = $request->minCv;
-                $parametros = array('minCv' => $minCv);
+                $parametros += ['minCv' => $minCv];
                 $coches = Coche::where('cv', '=>', $request->minCv)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(!empty($request->color)){
                 $color = $request->color;
-                $parametros = array('color' => $color);
+                $parametros += ['color' => $color];
                 $coches = Coche::where('color', $request->color)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(isset($request->cambio)){
                 $cambio = $request->cambio;
-                $parametros = array('cambio' => $cambio);
+                $parametros += ['cambio' => $cambio];
                 $coches = Coche::where('cambio', $request->cambio)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(isset($request->combustible)){
                 $combustible = $request->combustible;
-                $parametros = array('combustible' => $combustible);
+                $parametros += ['combustible' => $combustible];
                 $coches = Coche::where('combustible', $request->combustible)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(isset($request->plazas)){
                 $plaza = $request->plazas;
-                $parametros = array('plaza' => $plaza);
+                $parametros += ['plazas' => $plaza];
                 $coches = Coche::where('plazas', $request->plazas)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
             if(isset($request->puertas)){
                 $puerta = $request->puertas;
-                $parametros = array('puerta' => $puerta);
+                $parametros += ['puertas' => $puerta];
                 $coches = Coche::where('puertas', $request->puertas)->orderBy($orderby, $direction)->paginate( $nrp );
             }
             
         }else{
             $coches = Coche::orderBy($orderby, $direction)->paginate( $nrp );
         }
-        
         
         $fotos = $this->getFotos($coches);
         
@@ -183,7 +183,9 @@ class CocheController extends Controller
         $marcas = Make::all();
         $modelos = Model_car::all();
         
-        return view('coche.all',$data)->with(['coches' => $coches, 'fotos' => $fotos, 'parametros' => ['orderby' => $orderby, 'direction' => $direction, 'minKm' => $minKm, 'maxKm' => $maxKm, 'minPrecio' => $minPrecio, 'maxPrecio' => $maxPrecio, 'minCv' => $minCv, 'maxCv' => $maxCv, 'color' => $color, 'ordenado' => $ordenado], 'users' => $users, 'provincias' => $provincias, 'años' => $años, 'marcas' => $marcas, 'modelos' => $modelos, 'cuenta' => $cuenta, 'manos' => $manos, 'combustibles' => $combustibles, 'puertas' => $puertas, 'cambios' => $cambios, 'plazas' => $plazas]);
+        $parametros += ['orderby' => $orderby, 'direction' => $direction];
+        
+        return view('coche.all',$data)->with(['coches' => $coches, 'request' => $request, 'fotos' => $fotos, 'parametros' => $parametros, 'users' => $users, 'provincias' => $provincias, 'años' => $años, 'marcas' => $marcas, 'modelos' => $modelos, 'cuenta' => $cuenta, 'manos' => $manos, 'combustibles' => $combustibles, 'puertas' => $puertas, 'cambios' => $cambios, 'plazas' => $plazas]);
     }
     
     /**
@@ -234,7 +236,7 @@ class CocheController extends Controller
      */
     public function index(Request $request)
     {
-        $nrp = 8;
+        $nrp = 9;
                 
         $orderby = 'id';
         

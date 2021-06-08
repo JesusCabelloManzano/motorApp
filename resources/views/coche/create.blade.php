@@ -293,7 +293,7 @@
 									</div>
 									<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
 										<div class="cs-field">
-											<select data-placeholder="Selecciona provincias" tabindex="2" class="chosen-select chosen-container @error('provincia') is-invalid @enderror" id="provincia-dd" name="provincia" value="{{ old('provincia') }}">
+											<select data-placeholder="Selecciona provincias" tabindex="2" class="chosen-select chosen-container @error('provincia_id') is-invalid @enderror" id="provincia-dd" name="provincia_id" value="{{ old('provincia_id') }}">
             							    	<option value="" disabled selected>Selecciona una provincia</option>
             							    	@foreach($states as $dataComunidades)
                                                     <option value="{{ $dataComunidades->id }}">{{ $dataComunidades->name }}</option>

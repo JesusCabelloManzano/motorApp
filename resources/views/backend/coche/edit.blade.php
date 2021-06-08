@@ -295,6 +295,7 @@
 						</div>
 						<div class="card-body">
 							<img src="data:image/jpg;base64,{{ $coche->foto }}"></img>
+							<button name="unsetcover" type="submit" class="btn btn-primary">Borrar fotografía de portada actual</button>
 						</div>
 					@else
 					    <div class="card-header">
@@ -314,12 +315,14 @@
 					<div class="card-body" id="fotos">
 					    @foreach($fotos as $foto)
 							<img src="{{ asset(Storage::url($foto)) }}" alt="" width="200px"/>
-							<button name="set" value="{{$foto}}" type="submit" class="btn btn-secondary">Establecer como fotografía de portada actual</button><br><br>
+							<button name="set" value="{{$foto}}" type="submit" class="btn btn-primary">Establecer como fotografía de portada actual</button>
+                			<button name="unset" value="{{$foto}}" type="submit" class="btn btn-primary">Borrar fotografía</button>
 						@endforeach
 					</div>
 					
 					<div class="card-header">
 					    <input type="file" class="btn btn-success" name="fotos[]" accept="image/*" onchange="readURL(this);" multiple>
+					    
 					</div>
 					
 					<div class="card-header">
